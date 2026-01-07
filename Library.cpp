@@ -28,10 +28,6 @@ class User{
             username = u;
             password = p;
         }
-
-        void addBook(Book b) {
-            books.push_back(b);
-        }
 };
 
 void myBooks(User &users){
@@ -47,11 +43,11 @@ void getBook(User &users){
     cout << "Enter Author's name: ";
     getline(cin, author);
     Book b(name, author);
-    users.addBook(b);
+    users.books.push_back(b);
     cout << "The Book was added" << endl;
 }
 
-void deleteBook(User &users){
+int deleteBook(User &users){
     string name, author;
     cout << "Enter book's name: ";
     getline(cin, name);
@@ -61,18 +57,25 @@ void deleteBook(User &users){
         if(users.books[i].name == name && users.books[i].author == author){
             users.books.erase(users.books.begin() + i);
             cout << "Book has been deleted!" << endl;
+            return 0;
         }
     }
+    cout << "Incorrect name or author name entered!" << endl;
+    return 0;
 }
 
 void deleteAccount(vector<User> &users, int n) {
     string str;
-    cout << "Are you sure that you want to delete your account?(Enter <Yes> if you want): ";
+    cout << "Are you sure that you want to delete your account?(Enter <Yes> if you want or <No> if you don't want.): ";
     getline(cin, str);
-
-    if (str == "Yes") {
-        users.erase(users.begin() + n);
-        cout << "Your account has been deleted!" << endl;
+    while(true){
+        if (str == "Yes") {
+            users.erase(users.begin() + n);
+            cout << "Your account has been deleted!" << endl;
+            break;
+        }else if(str == "No"){
+            break;
+        }
     }
 }
 
@@ -141,7 +144,7 @@ void load(vector<User> &users) {
     while (getline(bookFile, username) && getline(bookFile, bookName) && getline(bookFile, bookAuthor)) {
         for (int i = 0; i < users.size(); i++) {
             if (users[i].username == username) {
-                users[i].addBook(Book(bookName, bookAuthor));
+                users[i].books.push_back(Book(bookName, bookAuthor));
                 break;
             }
         }

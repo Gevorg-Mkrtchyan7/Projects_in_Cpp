@@ -13,7 +13,7 @@ void printBoard(char board[3][3]){
 }
 
 bool legalMove(int r, int c, char board[3][3]){
-	return r >= 0 && r <= 2 && c >= 0 && c <= 2 && board[r][c] == empty; 
+	return r > 0 && r <= 3 && c > 0 && c <= 3 && board[r - 1][c - 1] == empty; 
 }
 
 bool didWin(char player, char board[3][3]){
@@ -57,19 +57,19 @@ int main(){
 	char player = xPlayer; 
 	while(true){
 		int row, col;
+        do{
+            std::cout << player << ": Please enter the row: ";
+            std::cin >> row; 
 
-		std::cout << player << ": Please enter the row: ";
-		std::cin >> row; 
+            std::cout << player <<  ": Please enter the column: ";
+            std::cin >> col; 
+        
+            if(legalMove(row, col, board) == false){
+                std::cout << "The position is busy or does not exist!" << std::endl;
+            }
+        }while(legalMove(row, col, board) == false);
 
-		std::cout << player <<  ": Please enter the column: ";
-		std::cin >> col; 
-
-		if(legalMove(row, col, board) == false){
-			std::cout << "Enterd cell is busy or doesn't exist!\n";
-			break;
-		}
-
-		board[row][col] = player;
+		board[row - 1][col - 1] = player;
 
 		if(didWin(player, board)){
 			printBoard(board);

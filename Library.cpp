@@ -5,38 +5,38 @@
 
 using namespace std;
 
-ofstream file("Library");
+ofstream file("Library.txt");
 
-class Book{
-    public:
-        string name;
-        string author;
+class Book {
+public:
+    string name;
+    string author;
 
-        Book(string n, string a) {
-            name = n;
-            author = a;
-        }
+    Book(string n, string a) {
+        name = n;
+        author = a;
+    }
 };
 
-class User{
-    public:
-        string username;
-        string password;
-        vector<Book> books;
+class User {
+public:
+    string username;
+    string password;
+    vector<Book> books;
 
-        User(string u, string p) {
-            username = u;
-            password = p;
-        }
+    User(string u, string p) {
+        username = u;
+        password = p;
+    }
 };
 
-void myBooks(User &users){
-    for(int i = 0; i < users.books.size(); i++){
+void myBooks(User& users) {
+    for (int i = 0; i < users.books.size(); i++) {
         cout << users.books[i].name << " - " << users.books[i].author << endl;
     }
 }
 
-void getBook(User &users){
+void getBook(User& users) {
     string name, author;
     cout << "Enter book's name: ";
     getline(cin, name);
@@ -47,14 +47,14 @@ void getBook(User &users){
     cout << "The Book was added" << endl;
 }
 
-int deleteBook(User &users){
+int deleteBook(User& users) {
     string name, author;
     cout << "Enter book's name: ";
     getline(cin, name);
     cout << "Enter book's author's name: ";
     getline(cin, author);
-    for(int i = 0; i < users.books.size(); ++i){
-        if(users.books[i].name == name && users.books[i].author == author){
+    for (int i = 0; i < users.books.size(); ++i) {
+        if (users.books[i].name == name && users.books[i].author == author) {
             users.books.erase(users.books.begin() + i);
             cout << "Book has been deleted!" << endl;
             return 0;
@@ -64,56 +64,61 @@ int deleteBook(User &users){
     return 0;
 }
 
-void deleteAccount(vector<User> &users, int n) {
+void deleteAccount(vector<User>& users, int n) {
     string str;
     cout << "Are you sure that you want to delete your account?(Enter <Yes> if you want or <No> if you don't want.): ";
     getline(cin, str);
-    while(true){
+    while (true) {
         if (str == "Yes") {
             users.erase(users.begin() + n);
             cout << "Your account has been deleted!" << endl;
             break;
-        }else if(str == "No"){
+        }
+        else if (str == "No") {
             break;
         }
     }
 }
 
-void func(vector<User> &users, int n){
+void func(vector<User>& users, int n) {
     string command;
-    while(1){
-        do{
+    while (1) {
+        do {
             cout << "Enter <My books> or <Get book> or <Delete book> or <Log out> or <Delete account>: ";
             getline(cin, command);
-        }while(command != "My books" && command != "Get book" && command != "Log out" && command != "Delete book" && command != "Delete account");
+        } while (command != "My books" && command != "Get book" && command != "Log out" && command != "Delete book" && command != "Delete account");
 
-        if(command == "My books"){
+        if (command == "My books") {
             myBooks(users[n]);
-        }else if(command == "Get book"){
+        }
+        else if (command == "Get book") {
             getBook(users[n]);
-        }else if(command == "Delete book"){
+        }
+        else if (command == "Delete book") {
             deleteBook(users[n]);
-        }else if(command == "Delete account"){
+        }
+        else if (command == "Delete account") {
             deleteAccount(users, n);
             break;
-        }else{
+        }
+        else {
             break;
         }
     }
 }
 
-bool isExist(vector<User> &users, string name, string password){
-    for(int i = 0; i < users.size(); ++i){
-        if(users[i].username == name){
+bool isExist(vector<User>& users, string name, string password) {
+    for (int i = 0; i < users.size(); ++i) {
+        if (users[i].username == name) {
             return false;
         }
     }
     return true;
 }
 
-void save(vector<User> &users) {
-    ofstream userFile("Download", ios::trunc);
-    ofstream bookFile("Books", ios::trunc);
+void save(vector<User>& users) {
+    ofstream userFile("Download.txt", ios::trunc);
+    ofstream bookFile("Books.txt", ios::trunc);
 
     for (int i = 0; i < users.size(); i++) {
         userFile << users[i].username << endl;
@@ -130,8 +135,8 @@ void save(vector<User> &users) {
     bookFile.close();
 }
 
-void load(vector<User> &users) {
-    ifstream userFile("Download");
+void load(vector<User>& users) {
+    ifstream userFile("Download.txt");
     string name, password;
 
     while (getline(userFile, name) && getline(userFile, password)) {
@@ -152,50 +157,53 @@ void load(vector<User> &users) {
     bookFile.close();
 }
 
-int main(){
+int main() {
     vector<User> users;
     load(users);
 
     string command;
-    while(1){
-        do{
+    while (1) {
+        do {
             cout << "Enter what you want(<Log in> or <Sign up> or <Exit>): ";
             getline(cin, command);
-        }while(command != "Log in" && command != "Sign up" && command != "Exit");
+        } while (command != "Log in" && command != "Sign up" && command != "Exit");
 
-        if(command == "Log in"){
+        if (command == "Log in") {
             string name, password;
             cout << "Enter your username: ";
             getline(cin, name);
             cout << "Enter your password: ";
             getline(cin, password);
             bool t = true;
-            for(int i = 0; i < users.size(); ++i){
-                if(users[i].username == name && users[i].password == password){
+            for (int i = 0; i < users.size(); ++i) {
+                if (users[i].username == name && users[i].password == password) {
                     func(users, i);
                     t = false;
                     break;
                 }
             }
-            if(t){
+            if (t) {
                 cout << "Wrong name or password!" << endl;
             }
-        }else if(command == "Sign up"){
+        }
+        else if (command == "Sign up") {
             string name, password;
             cout << "Enter your username: ";
             getline(cin, name);
             cout << "Enter your password: ";
             getline(cin, password);
-            if(isExist(users, name, password)){
+            if (isExist(users, name, password)) {
                 users.push_back(User(name, password));
                 cout << "Registered!" << endl;
-            }else{
+            }
+            else {
                 cout << "Already exist!" << endl;
             }
-        }else{
-            for(int i = 0; i < users.size(); ++i){
+        }
+        else {
+            for (int i = 0; i < users.size(); ++i) {
                 file << "Username: " << users[i].username << "  " << "Password: " << users[i].password << endl;
-                for(int j = 0; j < users[i].books.size(); ++j){
+                for (int j = 0; j < users[i].books.size(); ++j) {
                     file << "Book: " << users[i].books[j].name << " - " << "Author: " << users[i].books[j].author << endl;
                 }
                 file << endl;
